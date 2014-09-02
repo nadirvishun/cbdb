@@ -74,7 +74,9 @@ class Book extends CActiveRecord
 		return array(
 			'type' => array(self::BELONGS_TO, 'Type', 'type_id'),
 			'grade' => array(self::BELONGS_TO, 'Grade', 'grade_id'),
-			'bookauthors' => array(self::HAS_MANY, 'BookAuthor', 'book_id'),
+                                                     'authors'=>array(self::MANY_MANY,'Person','bookauthor(author_id,book_id)','index'=>'id'),
+                                                     'bookauthors' => array(self::HAS_MANY, 'BookAuthor','book_id', 'index' => 'author_id'),
+//			'bookauthors' => array(self::HAS_MANY, 'BookAuthor', 'book_id'),
 			'bookillustrators' => array(self::HAS_MANY, 'BookIllustrator', 'book_id'),
 			'bookpublishers' => array(self::HAS_MANY, 'BookPublisher', 'book_id'),
 			'booktags' => array(self::HAS_MANY, 'BookTag', 'book_id'),
@@ -91,6 +93,22 @@ class Book extends CActiveRecord
 		return CHtml::listData(Grade::model()->findAll(),'id','name');
 	}
 
+                  //
+                 public function addAuthor($author){
+                     if($author->isNewRecord){
+                         $author->save();
+                         $bookauthor=new BookAuthor();
+                         $bookauthor->book_id=  $this->id;
+                         $bookauthor->author_id=$author->id;
+                         $bookauthor->save();
+                     }
+                 }
+                 //
+                 public function removeAuthor($author_id) {
+                     $pk=array('book_id'=>  $this->id,'author_id'=>$author_id);
+                     BookAuthor::model()->deleteByPk($pk);
+                     
+                 }
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */

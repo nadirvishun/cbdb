@@ -31,7 +31,7 @@ class BookController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','removeAuthor','createAuthor'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -62,6 +62,7 @@ class BookController extends Controller
 	public function actionCreate()
 	{
 		$model=new Book;
+                                    $author= $this->createAuthor($model);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -69,12 +70,20 @@ class BookController extends Controller
 		if(isset($_POST['Book']))
 		{
 			$model->attributes=$_POST['Book'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($model->save()){
+                                                                       // record book/author association
+                                                                       //记录书和作者的关系
+                                                                        $ba = new BookAuthor;
+                                                                        $ba->book_id = $model->id;
+                                                                        $ba->author_id = $author->id;
+                                                                        $ba->save();
+				  $this->redirect(array('view','id'=>$model->id));
+                                                    }
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+                                                    'author'=>$author,
 		));
 	}
 
@@ -86,6 +95,8 @@ class BookController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+                                    //update时可以修改作者名
+                                   $author=  $this->createAuthor($model);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -99,6 +110,7 @@ class BookController extends Controller
 
 		$this->render('update',array(
 			'model'=>$model,
+                                                     'author'=>$author,
 		));
 	}
 
@@ -148,7 +160,55 @@ class BookController extends Controller
 		));
 	}
 
-	/**
+        
+                 //建立作者
+                 protected function createAuthor($book){
+                     $author=new Person();
+                     
+                     if(isset($_POST['Person'])){
+                         $author->attributes=$_POST['Person'];
+                         if($book->addAuthor($author)){
+                             Yii::app()->user->setFlash('authorAdded',"Added author ".CHtml::encode($author->fname." ".$author->lname));
+                             $this->refresh();
+                         }
+                     }
+                     return $author;
+                 }
+
+                 public function actionCreateAuthor($id) {
+                        // request must be made via ajax
+                        if(isset($_GET['ajax']) && isset($_GET['Person'])) {
+                                $model=$this->loadModel($id);
+                                $author = new Person();
+                                $author->attributes=$_GET['Person'];
+                                if (($author->fname != null) &&($author->lname !=null) ){
+                                        $model->addAuthor($author);
+                                        $this->renderPartial('_li',array(
+                                                 'model'=>$model,
+                                                 'author'=>$author,
+                                        ), false, true);
+                                }
+                        }else {
+                                throw new CHttpException(400,'Invalid request.');
+                        }
+                  }
+                 
+                 
+                 //移除作者
+                 public function actionRemoveAuthor($id) {
+                            // request must be made via ajax
+                        if(Yii::app()->request->isAjaxRequest()) {
+                                $model=$this->loadModel($id);
+                                $model->removeAuthor($_GET['author_id']);
+                        }else {
+                                throw new CHttpException(400,'Invalid request.');
+                        }
+                 }
+
+                 
+
+
+                 /**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
@@ -156,6 +216,7 @@ class BookController extends Controller
 	public function loadModel($id)
 	{
 		$model=Book::model()->findByPk($id);
+//                                    $model=Book::model()->with("authors")->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;

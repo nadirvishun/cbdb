@@ -21,6 +21,48 @@
                                     <?php echo $form->error($model,'issue_number'); ?>
                  </div>
         
+                 <div class="row">
+                                    <?php echo $form->labelEx($model,'author'); ?>
+                     
+                                   <?php if(Yii::app()->user->hasFlash('authorAdded')) { ?>
+                                    <div class="flash-success">
+                                    <?php echo Yii::app()->user->getFlash('authorAdded'); ?>
+                                    </div>
+                                    <?php } else {
+                                         echo $this->renderPartial('/person/_form', array('model' =>$author,'subform'=>1));//subform有什么用？
+                                         if (Yii::app()->controller->action->id != 'create') {//如果是update则显示一个add按钮来添加作者？
+                                    ?>
+                                                <div class="row buttons">
+                                                    <input class="add" type="button" obj="Person" url="<?php echo Yii::app()->controller->createUrl(
+                                                                                                                                    "createAuthor",
+                                                                                                                                    array("id"=>$model->id)); ?>" value="Add"/>
+                                                </div>
+                                        <?php }
+ 
+                                    } ?>
+                                    
+                     
+                                    <?php // echo "<ul class=\"authors\">";
+                                               //foreach ($model->authors as $auth) {
+                                            //        echo "<li>" . CHtml::encode($auth->fname . " " .$auth->lname) . "</li>";
+                                             //  }
+                                           //    echo "</ul>";
+                                    
+                                           //添加删除功能
+                                           if (count($model->authors)) {
+                                                echo "<ul class=\"authors\">";
+                                                foreach ($model->authors as $auth) {
+                                                    echo $this->renderPartial('_li', array(
+                                                            'model' => $model,
+                                                            'author' => $auth,
+                                                    ));
+                                                }
+                                                echo "</ul>";
+                                            }
+                                    
+                                    ?>
+                 </div>
+        
         
 	<div class="row">
 		<?php echo $form->labelEx($model,'type_id'); ?>

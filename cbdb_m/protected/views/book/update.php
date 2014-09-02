@@ -20,5 +20,5 @@ $this->menu=array(
 
 <h1>Update Book <?php echo $model->id; ?></h1>
 
-<?php // echo $this->renderPartial('_form', array('model'=>$model, 'author' =>$author)); //报错?>
-<?php echo $this->renderPartial('_form', array('model'=>$model)); //author怎么冒出来的?>
+<?php echo $this->renderPartial('_form', array('model'=>$model, 'author' =>$author));?>
+<?php // echo $this->renderPartial('_form', array('model'=>$model)); //author怎么冒出来的?>
