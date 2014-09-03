@@ -25,18 +25,18 @@
                                     <?php echo $form->labelEx($model,'author'); ?>
                      
                                    <?php if(Yii::app()->user->hasFlash('authorAdded')) { ?>
-                                    <div class="flash-success">
-                                    <?php echo Yii::app()->user->getFlash('authorAdded'); ?>
-                                    </div>
+                                                <div class="flash-success">
+                                                    <?php echo Yii::app()->user->getFlash('authorAdded'); ?>
+                                                </div>
                                     <?php } else {
-                                         echo $this->renderPartial('/person/_form', array('model' =>$author,'subform'=>1));//subform有什么用？
-                                         if (Yii::app()->controller->action->id != 'create') {//如果是update则显示一个add按钮来添加作者？
+                                                echo $this->renderPartial('/person/_form', array('model' =>$author,'subform'=>1));//subform有什么用？
+                                                 if (Yii::app()->controller->action->id != 'create') {//如果是update则显示一个add按钮来添加作者？
                                     ?>
-                                                <div class="row buttons">
-                                                    <input class="add" type="button" obj="Person" url="<?php echo Yii::app()->controller->createUrl(
+                                                      <div class="row buttons">
+                                                            <input class="add" type="button" obj="Person" url="<?php echo Yii::app()->controller->createUrl(
                                                                                                                                     "createAuthor",
                                                                                                                                     array("id"=>$model->id)); ?>" value="Add"/>
-                                                </div>
+                                                     </div>
                                         <?php }
  
                                     } ?>

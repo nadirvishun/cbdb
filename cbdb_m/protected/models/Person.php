@@ -42,6 +42,8 @@ class Person extends CActiveRecord
 		return array(
 			array('fname, lname', 'required'),
 			array('fname, lname', 'length', 'max'=>64),
+                                                    //使其不重复出现，但是如果不重复需要修改相应作者关联book，而允许重复则无需修改，只是会造成person数据库扩大。
+//  暂时不用                                   array('fname+lname','application.extensions.uniqueMultiColumnValidator' ),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, fname, lname', 'safe', 'on'=>'search'),

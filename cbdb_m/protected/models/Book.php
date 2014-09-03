@@ -105,9 +105,8 @@ class Book extends CActiveRecord
                  }
                  //
                  public function removeAuthor($author_id) {
-                     $pk=array('book_id'=>  $this->id,'author_id'=>$author_id);
+                     $pk=array('book_id'=>$this->id,'author_id'=>$author_id);
                      BookAuthor::model()->deleteByPk($pk);
-                     
                  }
 	/**
 	 * @return array customized attribute labels (name=>label)

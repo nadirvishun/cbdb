@@ -16,6 +16,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+                                   
 	),
 
 	'modules'=>array(
@@ -34,6 +35,7 @@ return array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
+                                   
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'rules'=>array(

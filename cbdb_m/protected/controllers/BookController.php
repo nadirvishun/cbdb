@@ -72,7 +72,7 @@ class BookController extends Controller
 			$model->attributes=$_POST['Book'];
 			if($model->save()){
                                                                        // record book/author association
-                                                                       //记录书和作者的关系
+                                                                       //记录书和作者的关系，这样虽然Person/_form中没有create按钮，但仍然可以创建
                                                                         $ba = new BookAuthor;
                                                                         $ba->book_id = $model->id;
                                                                         $ba->author_id = $author->id;
@@ -174,7 +174,7 @@ class BookController extends Controller
                      }
                      return $author;
                  }
-
+                 //和上面的不同，主要用于_form中createAuthor相关URL时，实时显示增加的内容
                  public function actionCreateAuthor($id) {
                         // request must be made via ajax
                         if(isset($_GET['ajax']) && isset($_GET['Person'])) {
@@ -197,7 +197,7 @@ class BookController extends Controller
                  //移除作者
                  public function actionRemoveAuthor($id) {
                             // request must be made via ajax
-                        if(Yii::app()->request->isAjaxRequest()) {
+                        if(Yii::app()->request->isAjaxRequest) {
                                 $model=$this->loadModel($id);
                                 $model->removeAuthor($_GET['author_id']);
                         }else {
