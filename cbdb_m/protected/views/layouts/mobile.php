@@ -13,7 +13,7 @@
 	?>
             <style type="text/css">
              #whatever.ui-grid-a > .ui-block-a {width:70%;}
-             #whatever.ui-grid-a > .ui-block-b {width:30%;text-align:center;} 
+             #whatever.ui-grid-a > .ui-block-b {width:30%;padding-left:8%;} 
            </style>
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
         
@@ -21,51 +21,51 @@
 
 <body>
     <div data-role="page">
-        <div data-role="collapsible" data-theme="b">
-            <h3>Main Menu</h3>
+<!--        <div data-role="collapsible" data-theme="b">
+            <h3>Main Menu</h3>-->
         
         <?php 
-                    $htmlOptions = array('data-role' => 'controlgroup','class' => 'localnav');
-                    $linkOptions = array('data-role' => 'button','data-theme' => 'b', 'rel' => 'external');
-                    $items = array();
-                    if (Yii::app()->user->isGuest) {
-                        $items[] = array('label'=>'Login','url'=>array('/site/login'), 'linkOptions' =>$linkOptions);
-                    }else {
-                        $items[] = array('label'=>'Home','url'=>array('/site/index'), 'linkOptions' =>$linkOptions);
-                        $items[] = array('label'=>'Comic Books','url'=>array('/book'), 'linkOptions'=>$linkOptions);
-                        $items[] = array('label'=>'Logout (' . Yii::app()->user->name . ')', 'url'=>array('/site/logout'),'linkOptions' => $linkOptions);
-                    }
-                    //Yii::app()->getBaseUrl(true);       => http://localhost/yii_projects
-                    //Yii::app()->getHomeUrl();           => /yii_projects/index.php
-                    //Yii::app()->getBaseUrl(false);       => /yii_projects
-                    //mixed preg_replace( mixed pattern, mixed replacement, mixed subject [, int limit ] ) =>subject中匹配的内容，用replacement来替换pattern
-                    $non_mobile_uri = preg_replace('/mobile=on/','mobile=off', /*'/site/login');*/Yii::app()->request->baseUrl);//替换;防止在baseUrl中有mobile=on
-                    $items[] = array('label'=>'Turn off mobile view','url'=>array('?mobile=off'), 'linkOptions' =>$linkOptions);
-                    $this->widget('zii.widgets.CMenu',array(
-                                                                        'activeCssClass' => 'active',
-                                                                        'activateParents' => true,
-                                                                        'htmlOptions' => $htmlOptions,
-                                                                        'items'=> $items
-                                                                        )
-                     );
+//                    $htmlOptions = array('data-role' => 'controlgroup','class' => 'localnav');
+//                    $linkOptions = array('data-role' => 'button','data-theme' => 'b', 'rel' => 'external');
+//                    $items = array();
+//                    if (Yii::app()->user->isGuest) {
+//                        $items[] = array('label'=>'Login','url'=>array('/site/login'), 'linkOptions' =>$linkOptions);
+//                    }else {
+//                        $items[] = array('label'=>'Home','url'=>array('/site/index'), 'linkOptions' =>$linkOptions);
+//                        $items[] = array('label'=>'Comic Books','url'=>array('/book'), 'linkOptions'=>$linkOptions);
+//                        $items[] = array('label'=>'Logout (' . Yii::app()->user->name . ')', 'url'=>array('/site/logout'),'linkOptions' => $linkOptions);
+//                    }
+//                    //Yii::app()->getBaseUrl(true);       => http://localhost/yii_projects
+//                    //Yii::app()->getHomeUrl();           => /yii_projects/index.php
+//                    //Yii::app()->getBaseUrl(false);       => /yii_projects
+//                    //mixed preg_replace( mixed pattern, mixed replacement, mixed subject [, int limit ] ) =>subject中匹配的内容，用replacement来替换pattern
+//                    $non_mobile_uri = preg_replace('/mobile=on/','mobile=off', /*'/site/login');*/Yii::app()->request->baseUrl);//替换;防止在baseUrl中有mobile=on
+//                    $items[] = array('label'=>'Turn off mobile view','url'=>array('?mobile=off'), 'linkOptions' =>$linkOptions);
+//                    $this->widget('zii.widgets.CMenu',array(
+//                                                                        'activeCssClass' => 'active',
+//                                                                        'activateParents' => true,
+//                                                                        'htmlOptions' => $htmlOptions,
+//                                                                        'items'=> $items
+//                                                                        )
+//                     );
 
         ?>
-       </div><!--collapsible -->
+       <!--</div>collapsible -->
        
        <?php //mobile.php没有column2.php什么的，因此下面代码判断侧边栏是否存在，如果存在则折叠成Operations，感觉可以用网格来实现。
-                if (count($this->menu) > 0) {
-                    echo "<div data-role='collapsible' data-theme='b'>\n";
-                    echo "\t<h3>Operations</h3>\n";
-                    foreach ($this->menu as $key=>$item) {
-                        $this->menu[$key]['linkOptions'] = $linkOptions;
-                    }
-                    $this->BeginWidget('zii.widgets.CMenu', array(
-                                                                        'items'=>$this->menu,
-                                                                        'htmlOptions'=> $htmlOptions,
-                    ));
-                    $this->endWidget();
-                    echo "</div><!-- collapsible -->\n";
-                }
+//                if (count($this->menu) > 0) {
+//                    echo "<div data-role='collapsible' data-theme='b'>\n";
+//                    echo "\t<h3>Operations</h3>\n";
+//                    foreach ($this->menu as $key=>$item) {
+//                        $this->menu[$key]['linkOptions'] = $linkOptions;
+//                    }
+//                    $this->BeginWidget('zii.widgets.CMenu', array(
+//                                                                        'items'=>$this->menu,
+//                                                                        'htmlOptions'=> $htmlOptions,
+//                    ));
+//                    $this->endWidget();
+//                    echo "</div><!-- collapsible -->\n";
+//                }
         ?>
        
 <!--        <div data-role="navbar">
@@ -80,21 +80,26 @@
 <div data-role="navbar">
         <?php 
                     $htmlOptions = array('class' => 'localnav');
-                    $linkOptions = array('data-theme' => 'a', 'rel' => 'external');
+                    $linkOptions = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"plus" );
+                    $linkOptions1 = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"home");
+                    $linkOptions2 = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"grid" );
+                    $linkOptions3 = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"home" );
+                    $linkOptions4 = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"minus" );
+                    $linkOptions5 = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"forward" );
                     $items = array();
                     if (Yii::app()->user->isGuest) {
                         $items[] = array('label'=>'Login','url'=>array('/site/login'), 'linkOptions' =>$linkOptions);
                     }else {
-                        $items[] = array('label'=>'Home','url'=>array('/site/index'), 'linkOptions' =>$linkOptions);
-                        $items[] = array('label'=>'Comic Books','url'=>array('/book'), 'linkOptions'=>$linkOptions);
-                        $items[] = array('label'=>'Logout (' . Yii::app()->user->name . ')', 'url'=>array('/site/logout'),'linkOptions' => $linkOptions);
+                        $items[] = array('label'=>'Home','url'=>array('/site/index'), 'linkOptions' =>$linkOptions1);
+                        $items[] = array('label'=>'Comic Books','url'=>array('/book'), 'linkOptions'=>$linkOptions2);
+                        $items[] = array('label'=>'Logout (' . Yii::app()->user->name . ')', 'url'=>array('/site/logout'),'linkOptions' => $linkOptions4);
                     }
                     //Yii::app()->getBaseUrl(true);       => http://localhost/yii_projects
                     //Yii::app()->getHomeUrl();           => /yii_projects/index.php
                     //Yii::app()->getBaseUrl(false);       => /yii_projects
                     //mixed preg_replace( mixed pattern, mixed replacement, mixed subject [, int limit ] ) =>subject中匹配的内容，用replacement来替换pattern
                     $non_mobile_uri = preg_replace('/mobile=on/','mobile=off', /*'/site/login');*/Yii::app()->request->baseUrl);//替换;防止在baseUrl中有mobile=on
-                    $items[] = array('label'=>'Turn off mobile view','url'=>array('?mobile=off'), 'linkOptions' =>$linkOptions);
+                    $items[] = array('label'=>'Turn off mobile view','url'=>array('?mobile=off'), 'linkOptions' =>$linkOptions5);
                     $this->widget('zii.widgets.CMenu',array(
                                                                         'activeCssClass' => 'active',
                                                                         'activateParents' => true,
@@ -120,7 +125,7 @@
                     echo $content;
                     echo "</div>\n";
                     echo "</div>\n";
-                    echo "<div class=‘ui-block-b’>\n";
+                    echo "<div class='ui-block-b'>\n";
                     echo "\t<h3>Operations</h3>\n";
                     foreach ($this->menu as $key=>$item) {
                         $this->menu[$key]['linkOptions'] = $linkOptions;

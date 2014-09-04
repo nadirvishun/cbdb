@@ -139,8 +139,13 @@ class BookController extends Controller
 	 */
 	public function actionIndex()
 	{
+                                    //修改，如果是mobile直接转向mobile_index.php
+                                   $view='index';
 		$dataProvider=new CActiveDataProvider('Book');
-		$this->render('index',array(
+                                    if (Yii::app()->user->getState('mobile')) {
+                                            $view = 'mobile_index';
+                                    }
+		$this->render($view,array(
 			'dataProvider'=>$dataProvider,
 		));
 	}
