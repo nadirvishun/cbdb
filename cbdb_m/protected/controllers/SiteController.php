@@ -100,7 +100,12 @@ class SiteController extends Controller
 	 */
 	public function actionLogout()
 	{
-		Yii::app()->user->logout();
-		$this->redirect(Yii::app()->homeUrl);
+                                    if (Yii::app()->user->getState('mobile')) {//是移动端则退出时也是移动端
+                                            Yii::app()->user->logout();
+                                             $this->redirect(Yii::app()->homeUrl ."?mobile=on"); 
+                                    }else{
+                                            Yii::app()->user->logout();
+                                             $this->redirect(Yii::app()->homeUrl); 
+                                    }
 	}
 }

@@ -7,6 +7,7 @@
 	<!--CSS includes here -->
         <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css">-->
             <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery.mobile-1.4.3.min.css" media="screen, projection" />
+           
 	<?php 
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
                              Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl . '/js/jquery.mobile-1.4.3.min.js');
@@ -77,13 +78,13 @@
         </div>-->
         
 <?php //利用导航来实现。zii.widgets.CMen会生成<ul><li></li></ul>格式?>
-<div data-role="navbar">
-        <?php 
+<div data-role="navbar" role="navigation" class="ui-navbar">
+        <?php  //从1.4.2开始，theme默认只有黑和白两个data-theme，可以通过添加css文件来增加，不建议。现在有主题选择器来制作主题
                     $htmlOptions = array('class' => 'localnav');
                     $linkOptions = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"plus" );
-                    $linkOptions1 = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"home");
-                    $linkOptions2 = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"grid" );
-                    $linkOptions3 = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"home" );
+                    $linkOptions1 = array('data-theme' => 'a','data-icon'=>"home");
+                    $linkOptions2 = array('data-theme' => 'a', 'data-icon'=>"grid" );
+                 
                     $linkOptions4 = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"minus" );
                     $linkOptions5 = array('data-theme' => 'a', 'rel' => 'external','data-icon'=>"forward" );
                     $items = array();
@@ -101,8 +102,8 @@
                     $non_mobile_uri = preg_replace('/mobile=on/','mobile=off', /*'/site/login');*/Yii::app()->request->baseUrl);//替换;防止在baseUrl中有mobile=on
                     $items[] = array('label'=>'Turn off mobile view','url'=>array('?mobile=off'), 'linkOptions' =>$linkOptions5);
                     $this->widget('zii.widgets.CMenu',array(
-                                                                        'activeCssClass' => 'active',
-                                                                        'activateParents' => true,
+//                                                                        'activeCssClass' => 'active',
+//                                                                        'activateParents' => true,
                                                                         'htmlOptions' => $htmlOptions,
                                                                         'items'=> $items
                                                                         )
